@@ -2,7 +2,7 @@
 	"name": "Table Customer",
 	"properties": {
 		"content": {
-			"query": "Create Table [BussinesCore].[Customer]\n(\n\tCustomerIdSNK int not null, \n\tCustomerId uniqueidentifier not null,\n\t[Name] varchar(300) not null,\n\tLegalCode varchar(50) not null,\n\tZoneCode uniqueidentifier not null,\n\tZoneName varchar(50) not null,\n\tCityCode uniqueidentifier not null,\n\tCityName varchar(50) not null\n)\nWith\n(\n\tDistribution = Replicate\n)",
+			"query": "Create Table [BussinesCore].[Customer]\n(\n\tCustomerIdSNK int not null IDENTITY PRIMARY KEY NONCLUSTERED NOT ENFORCED, \n\tCustomerId uniqueidentifier not null,\n\t[Name] varchar(300) not null,\n\tLegalCode varchar(50) not null,\n\tZoneCode uniqueidentifier not null,\n\tZoneName varchar(50) not null,\n\tCityCode uniqueidentifier not null,\n\tCityName varchar(50) not null\n)\nWith\n(\n\tDistribution = Replicate\n)\n\n",
 			"metadata": {
 				"language": "sql"
 			},
