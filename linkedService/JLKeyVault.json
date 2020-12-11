@@ -1,0 +1,10 @@
+{
+	"name": "JLKeyVault",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://JLVault.vault.azure.net/"
+		}
+	}
+}

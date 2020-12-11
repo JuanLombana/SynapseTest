@@ -1,0 +1,50 @@
+{
+	"name": "Dest_DW",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [
+			{
+				"name": "CustomerIdSNK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "Name",
+				"type": "varchar"
+			},
+			{
+				"name": "LegalCode",
+				"type": "varchar"
+			},
+			{
+				"name": "ZoneCode",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ZoneName",
+				"type": "varchar"
+			},
+			{
+				"name": "CityCode",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "CityName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "BussinesCore",
+			"table": "Customer"
+		},
+		"sqlPool": {
+			"referenceName": "BussinesDW",
+			"type": "SqlPoolReference"
+		}
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"name": "Source_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Source_DB_Ideo",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
