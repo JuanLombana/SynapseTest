@@ -1,0 +1,21 @@
+{
+	"name": "Source_DB_Ideo",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "JLKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "Ideo-ConnString"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
