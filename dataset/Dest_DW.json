@@ -38,6 +38,10 @@
 				"type": "varchar"
 			}
 		],
+		"typeProperties": {
+			"schema": "BussinesCore",
+			"table": "Customer"
+		},
 		"sqlPool": {
 			"referenceName": "BussinesDW",
 			"type": "SqlPoolReference"
