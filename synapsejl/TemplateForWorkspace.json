@@ -370,18 +370,78 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Table Customer')]",
+			"name": "[concat(parameters('workspaceName'), '/Schemas')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"content": {
-					"query": "Create Table [BussinesCore].[Customer]\n(\n\tCustomerIdSNK int not null IDENTITY PRIMARY KEY NONCLUSTERED NOT ENFORCED, \n\tCustomerId uniqueidentifier not null,\n\t[Name] varchar(300) not null,\n\tLegalCode varchar(50) not null,\n\tZoneCode uniqueidentifier not null,\n\tZoneName varchar(50) not null,\n\tCityCode uniqueidentifier not null,\n\tCityName varchar(50) not null\n)\nWith\n(\n\tDistribution = Replicate\n)\n\n",
+					"query": "CREATE SCHEMA [Staging]\n\nCREATE SCHEMA [BussinesCore]",
 					"metadata": {
 						"language": "sql"
 					},
 					"currentConnection": {
 						"name": "BussinesDW",
 						"type": "SqlPool"
+					}
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Table BussinesUnit')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "Create Table [BussinesCore].[BussinesUnit]\n(\n\tBussinesIdSNK int not null IDENTITY PRIMARY KEY NONCLUSTERED NOT ENFORCED, \n    Code varchar(50) not null,\n    [Name] varchar(50) not null,\n    ConnectionString varchar(200) not null\n)\nWith\n(\n\tDistribution = Replicate\n);\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"name": "master",
+						"type": "SqlOnDemand"
+					}
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Table Customer')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "Create Table [Staging].[Customer]\n(\n\tCustomerId uniqueidentifier not null,\n\tBussinesId int not null,\n\t[Name] varchar(300) not null,\n\tLegalCode varchar(50) not null,\n\tZoneCode uniqueidentifier not null,\n\tZoneName varchar(50) not null,\n\tCityCode uniqueidentifier not null,\n\tCityName varchar(50) not null\n)\nWith\n(\n\tDistribution = Replicate\n);\n\n\nCreate Table [BussinesCore].[Customer]\n(\n\tCustomerIdSNK int not null IDENTITY PRIMARY KEY NONCLUSTERED NOT ENFORCED, \n\tBussinesId int not null,\n\tCustomerId uniqueidentifier not null,\n\t[Name] varchar(300) not null,\n\tLegalCode varchar(50) not null,\n\tZoneCode uniqueidentifier not null,\n\tZoneName varchar(50) not null,\n\tCityCode uniqueidentifier not null,\n\tCityName varchar(50) not null\n)\nWith\n(\n\tDistribution = Replicate\n)\n\n",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"name": "BussinesDW",
+						"type": "SqlPool"
+					}
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/TransferCustomers')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "StoredProcedures"
+				},
+				"content": {
+					"query": "CREATE PROCEDURE [BussinesCore].[TransferCustomers]\nAS\nBEGIN\n\n\tUPDATE T\n\t\tSET\n\t\t\tNAME = S.NAME,\n\t\t\tLegalCode = S.LegalCode,\n\t\t\tZoneCode = S.ZoneCode,\n\t\t\tZoneName = S.ZoneName,\n\t\t\tCityCode = S.CityCode,\n\t\t\tCityName = S.CityName\n\t\tFROM [BussinesCore].[Customer] AS T\n\t\tINNER JOIN [Staging].[Customer] AS S ON T.CustomerId = S.CustomerId AND T.BussinesId = S.BussinesId\n\n\tINSERT INTO [BussinesCore].[Customer]\n\t([BussinesId], [CustomerId], [Name], [LegalCode], [ZoneCode], [ZoneName], [CityCode], [CityName])\n\tSELECT [BussinesId], [CustomerId], [Name], [LegalCode], [ZoneCode], [ZoneName], [CityCode], [CityName]\n\tFROM [Staging].[Customer] AS S\n\tWHERE NOT EXISTS(\n\t\tSELECT T.CustomerId\n\t\tFROM [BussinesCore].[Customer] AS T\n\t\tWHERE T.CustomerId = S.CustomerId AND T.BussinesId = S.BussinesId\n\t)\n\n\t\n\nEND\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"name": "master",
+						"type": "SqlOnDemand"
 					}
 				},
 				"type": "SqlQuery"
