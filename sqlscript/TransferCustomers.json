@@ -1,0 +1,19 @@
+{
+	"name": "TransferCustomers",
+	"properties": {
+		"folder": {
+			"name": "StoredProcedures"
+		},
+		"content": {
+			"query": "CREATE PROCEDURE [BussinesCore].[TransferCustomers]\nAS\nBEGIN\n\n\tUPDATE T\n\t\tSET\n\t\t\tNAME = S.NAME,\n\t\t\tLegalCode = S.LegalCode,\n\t\t\tZoneCode = S.ZoneCode,\n\t\t\tZoneName = S.ZoneName,\n\t\t\tCityCode = S.CityCode,\n\t\t\tCityName = S.CityName\n\t\tFROM [BussinesCore].[Customer] AS T\n\t\tINNER JOIN [Staging].[Customer] AS S ON T.CustomerId = S.CustomerId AND T.BussinesId = S.BussinesId\n\n\tINSERT INTO [BussinesCore].[Customer]\n\t([BussinesId], [CustomerId], [Name], [LegalCode], [ZoneCode], [ZoneName], [CityCode], [CityName])\n\tSELECT [BussinesId], [CustomerId], [Name], [LegalCode], [ZoneCode], [ZoneName], [CityCode], [CityName]\n\tFROM [Staging].[Customer] AS S\n\tWHERE NOT EXISTS(\n\t\tSELECT T.CustomerId\n\t\tFROM [BussinesCore].[Customer] AS T\n\t\tWHERE T.CustomerId = S.CustomerId AND T.BussinesId = S.BussinesId\n\t)\n\n\t\n\nEND\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"name": "master",
+				"type": "SqlOnDemand"
+			}
+		},
+		"type": "SqlQuery"
+	}
+}

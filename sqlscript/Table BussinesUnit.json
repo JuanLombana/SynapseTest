@@ -1,0 +1,16 @@
+{
+	"name": "Table BussinesUnit",
+	"properties": {
+		"content": {
+			"query": "Create Table [BussinesCore].[BussinesUnit]\n(\n\tBussinesIdSNK int not null IDENTITY PRIMARY KEY NONCLUSTERED NOT ENFORCED, \n    Code varchar(50) not null,\n    [Name] varchar(50) not null,\n    ConnectionString varchar(200) not null\n)\nWith\n(\n\tDistribution = Replicate\n);\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"name": "master",
+				"type": "SqlOnDemand"
+			}
+		},
+		"type": "SqlQuery"
+	}
+}
