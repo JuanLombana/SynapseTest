@@ -1,0 +1,16 @@
+{
+	"name": "Schemas",
+	"properties": {
+		"content": {
+			"query": "CREATE SCHEMA [Staging]\n\nCREATE SCHEMA [BussinesCore]",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"name": "BussinesDW",
+				"type": "SqlPool"
+			}
+		},
+		"type": "SqlQuery"
+	}
+}
